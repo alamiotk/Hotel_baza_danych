@@ -1,0 +1,103 @@
+CREATE TABLE IF NOT EXISTS Gosc (
+  pesel CHAR(20) NOT NULL,
+  imie CHAR(20),
+  nazwisko CHAR(20),
+  adres1 VARCHAR(200),
+  adres2 VARCHAR(200),
+  telefon INT(9),
+  nr_dowodu VARCHAR(200),
+  login CHAR(20),
+  haslo CHAR(20),
+Key (pesel)) ENGINE = MyISAM;
+
+
+CREATE TABLE IF NOT EXISTS Kategorie (
+  id_kategorii INT(20) NOT NULL,
+  nazwa_kategorii CHAR(20),
+  cena CHAR(20),
+  liczba_miejsc INT(20),
+  opis VARCHAR(250),
+Primary Key (id_kategorii)) ENGINE = MyISAM;
+
+
+CREATE TABLE IF NOT EXISTS Pokoj (
+  nr_pokoju VARCHAR(20) NOT NULL,
+  pietro CHAR(20),
+  opis_szczegolowy VARCHAR(250),
+  id_kategorii INT(20),
+Primary Key (nr_pokoju)) ENGINE = MyISAM;
+
+
+CREATE TABLE IF NOT EXISTS Rezerwacja_zamowiona (
+  data_zamowienia DATE NOT NULL,
+  pesel CHAR(20),
+  id_kategorii INT(20),
+  zamawia_od DATE,
+  zamawia_do DATE,
+Primary Key ( data_zamowienia, pesel, id_kategorii)) ENGINE = MyISAM;
+
+
+CREATE TABLE IF NOT EXISTS Rezerwacja_przydzielona (
+  data_od DATE NOT NULL,
+  pesel CHAR(20),
+  nr_pokoju VARCHAR(20),
+  data_do DATE,
+Primary Key ( data_od, pesel, nr_pokoju)) ENGINE = MyISAM;
+
+
+insert into Gosc values ('98050392837', 'Ewa', 'Nowacka', 'Wieliczka', 'Krakowska 7', '847398920', 'CCC784736', 'ewanow', 'nowacka');
+insert into Gosc values ('87031062543', 'Andrzej', 'Wrobel', 'Krakow', 'Tatrzanska 8/3', '572938716', 'VCT826630', 'anwro', 'wrobel');
+insert into Gosc values ('67070829174', 'Jan', 'Malinowski', 'Gdansk', 'Kartuska 80', '698264038', 'PWK827938', 'janma', 'malinowski');
+
+insert into Kategorie values ('1','jednoosobowy', '60zl/os/noc', '1', 'pokoj jednoos. z lazienka');
+insert into Kategorie values ('2', 'dwuosobowy', '50zl/os/noc', '2', 'pokoj dwuos. bez lazienki');
+insert into Kategorie values ('3', 'dwuosobowy', '50zl/os/noc', '2', 'pokoj dwuos. z lazienka');
+insert into Kategorie values ('4', 'trzyosobowy', '45zl/os/noc', '3', 'pokoj trzyosobowy z lazienka');
+insert into Kategorie values ('5', 'apartament', '70zl/os/noc', '5', 'apartament dwupokojowy z lazienka, lodowka i aneksem kuchennym');
+insert into Kategorie values ('6', 'apartament', '80zl/os/noc', '4', 'apartament salon+pokoj z lazienka, lodowka i aneksem kuchennym');
+
+insert into Pokoj values ('1', 'parter', 'dwuos. z lazienka', '3');
+insert into Pokoj values ('2', 'parter', 'jednos. z lazienka', '1');
+insert into Pokoj values ('3', 'pierwsze', 'trzyos z lazienka', '4');
+insert into Pokoj values ('4', 'pierwsze', 'dwuos. bez lazienki', '2');
+insert into Pokoj values ('5', 'pierwsze', 'jednos. z lazienka', '1');
+insert into Pokoj values ('6', 'drugie', 'dwuos. z lazienka', '3');
+insert into Pokoj values ('7', 'drugie', 'apartament', '5');
+insert into Pokoj values ('8', 'trzecie', 'apartament', '5');
+insert into Pokoj values ('9', 'trzecie', 'jednos. z lazienka', '1');
+insert into Pokoj values ('10', 'czwarte', 'apartament', '6');
+
+insert into Rezerwacja_zamowiona values ('2018-08-10', '67070829174', '2', '2018-09-15', '2018-09-25');
+insert into Rezerwacja_zamowiona values ('2018-11-12', '87031062543', '6', '2018-12-30', '2019-01-02');
+insert into Rezerwacja_zamowiona values ('2019-02-10', '87031062543', '5', '2019-03-03', '2019-03-05');
+insert into Rezerwacja_zamowiona values ('2019-02-10', '87031062543', '3', '2019-03-03', '2019-03-05');
+insert into Rezerwacja_zamowiona values ('2019-04-03', '98050392837', '4', '2019-05-05', '2019-05-07');
+
+insert into Rezerwacja_przydzielona values ('2018-09-15', '67070829174', '4', '2018-09-25');
+insert into Rezerwacja_przydzielona values ('2018-12-30', '87031062543', '10', '2019-01-02');
+insert into Rezerwacja_przydzielona values ('2019-03-03', '87031062543', '7', '2019-03-05');
+insert into Rezerwacja_przydzielona values ('2019-03-03', '87031062543', '1', '2019-03-05');
+insert into Rezerwacja_przydzielona values ('2019-05-05', '98050392837', '3', '2019-05-07');
+
+
+ALTER TABLE Pokoj ADD CONSTRAINT Relationship1 FOREIGN KEY (id_kategorii) REFERENCES Kategorie (id_kategorii) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+ALTER TABLE Rezerwacja_zamowiona ADD CONSTRAINT Relationship2 FOREIGN KEY (pesel) REFERENCES Gosc (pesel) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+ALTER TABLE Rezerwacja_zamowiona ADD CONSTRAINT Relationship3 FOREIGN KEY (id_kategorii) REFERENCES Kategorie (id_kategorii) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+ALTER TABLE Rezerwacja_przydzielona ADD CONSTRAINT Relationship4 FOREIGN KEY (pesel) REFERENCES Gosc (pesel) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+ALTER TABLE Rezerwacja_przydzielona ADD CONSTRAINT Relationship5 FOREIGN KEY (nr_pokoju) REFERENCES Pokoj (nr_pokoju) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+
+select *from Gosc;
+select *from Kategorie;
+select *from Pokoj;
+select *from Rezerwacja_zamowiona;
+select *from Rezerwacja_przydzielona;
