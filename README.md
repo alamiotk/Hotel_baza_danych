@@ -1,4 +1,5 @@
-# Hotel_baza_danych
-Najpierw przeczytać index.php
+#Hotel_baza_danych
 
-Plik "sk" to baza danych napisana w MySQL
+Read index.php first
+
+The "sk" file is a database written in MySQL
